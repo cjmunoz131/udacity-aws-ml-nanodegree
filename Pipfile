@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+jupyterlab = "*"
+numpy = "*"
+pandas = "*"
+matplotlib = "*"
+seaborn = "*"
+mxnet = "<2.0.0"
+bokeh = "==2.0.1"
+autogluon = "*"
+kaggle = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"

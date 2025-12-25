@@ -1,0 +1,87 @@
+# ==========================================
+# Entornos Virtuales (Indispensable)
+# ==========================================
+.venv/
+venv/
+env/
+bin/
+lib/
+develop-eggs/
+dist/
+eggs/
+installed.files/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ==========================================
+# Jupyter Notebooks (Específico)
+# ==========================================
+# Archivos temporales de checkpoint
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Archivos de logs o perfiles de IPython
+profile_default/
+ipython_config.py
+
+# Si usas herramientas como nbconvert
+*.nbconvert.ipynb
+
+# ==========================================
+# Machine Learning y Datos (Crítico)
+# ==========================================
+# Ignorar datasets (mejor descargarlos o usar DVC)
+data/raw/
+data/processed/
+*.json
+*.h5
+*.parquet
+*.pickle
+*.pkl
+
+# Ignorar modelos entrenados (pesados)
+models/
+*.joblib
+*.pth
+*.onnx
+*.weights
+*.pb
+
+# Logs de entrenamiento (Tensorboard, MLflow)
+runs/
+mlruns/
+lightning_logs/
+wandb/
+
+# ==========================================
+# Visual Studio Code
+# ==========================================
+.vscode/
+# Excluir específicamente configuraciones locales pero permitir compartidas si es necesario
+# .vscode/settings.json
+# .vscode/tasks.json
+# .vscode/launch.json
+# .vscode/extensions.json
+*.code-workspace
+
+# ==========================================
+# Sistema Operativo y Varios
+# ==========================================
+.DS_Store
+Thumbs.db
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.python-version
+
+### =========================================
+### AUTGLUON
+*/AutogluonModels/*
+*/*.zip
+Pipfile.lock
