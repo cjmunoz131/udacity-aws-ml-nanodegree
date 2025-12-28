@@ -10,7 +10,7 @@ pandas = "*"
 matplotlib = "*"
 seaborn = "*"
 mxnet = "<2.0.0"
-bokeh = "==2.0.1"
+bokeh = "*"
 autogluon = "*"
 kaggle = "*"
 
