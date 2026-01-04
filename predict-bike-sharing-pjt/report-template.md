@@ -6,7 +6,7 @@
 When I tried to submit my predicts, because my results had many negative values that needed to be corrected, Kaggle output an error.
 
 ### What was the top ranked model that performed?
-WeightedEnsemble_L3 was the top-performing model, achieving the best RMSE score of −31.940849.
+WeightedEnsemble_L3 was the top-performing model, achieving the best RMSE score of −31.91.
 
 ## Exploratory data analysis and feature creation
 ### What did the exploratory analysis find and how did you add additional features?
@@ -17,7 +17,7 @@ The model performed significantly better after adding the additional features me
 
 ## Hyper parameter tuning
 ### How much better did your model preform after trying different hyper parameters?
-The model perfomed slightly worse that the previous model.
+The model perfomed slightly worse that the previous model in the trainig validation phase and slightly better in the test evaluation phase.
 
 
 ### If you were given more time with this dataset, where do you think you would spend more time?
@@ -26,9 +26,9 @@ If I were given more time with this dataset, I would spend more time on feature 
 ### Create a table with the models you ran, the hyperparameters modified, and the kaggle score.
 |model|NN|GBM|CATB|XGB|RF|score|
 |--|--|--|--|--|
-|initial|default|default|default|default|default|1.4457|
-|add_features|default|default|default|default|default|0.4738|
-|hpo|NN Tunning|GBM Tuning|CATB Tuning|XGB Tuning|RF Tuning|0.500|
+|initial|default|default|default|default|default|1.4177|
+|add_features|default|default|default|default|default|0.4853|
+|hpo|NN Tunning|GBM Tuning|CATB Tuning|XGB Tuning|RF Tuning|0.464|
 
 ### Create a line plot showing the top model score for the three (or more) training runs during the project.
 
