@@ -55,16 +55,16 @@ module "aws_app_compute_lambda_data-images-generator_layer_module" {
   }
 }
 
-module "aws_app_compute_lambda_layer_utils_layer_module" {
-  providers = {
-    aws.main = aws.account1
-  }
-  source                   = "git@github.com:cjmunoz131/terraform_modules//modules/aws/aws-app-compute-layer-lambda"
-  layer_path_filename      = "./${path.root}/dev/layers/sagemaker/sagemaker.zip"
-  layer_name               = "sagemaker-layer"
-  compatibles_runtimes     = ["python3.11"]
-  compatible_architectures = ["arm64"]
-}
+# module "aws_app_compute_lambda_layer_utils_layer_module" {
+#   providers = {
+#     aws.main = aws.account1
+#   }
+#   source                   = "git@github.com:cjmunoz131/terraform_modules//modules/aws/aws-app-compute-layer-lambda"
+#   layer_path_filename      = "./${path.root}/dev/layers/sagemaker/sagemaker.zip"
+#   layer_name               = "sagemaker-layer"
+#   compatibles_runtimes     = ["python3.11"]
+#   compatible_architectures = ["arm64"]
+# }
 
 module "aws_app_compute_lambda_data-images-classifier_layer_module" {
   providers = {
@@ -85,11 +85,12 @@ module "aws_app_compute_lambda_data-images-classifier_layer_module" {
   custom_policy_path = "${path.root}/extra-policies/lambda"
   create_layers      = false
   lambda_layers_definitions = {}
-  lambda_layers                = [module.aws_app_compute_lambda_layer_utils_layer_module.lambda_layer_version_arn]
+  #lambda_layers                = [module.aws_app_compute_lambda_layer_utils_layer_module.lambda_layer_version_arn]
+  lambda_layers = ["arn:aws:lambda:us-east-1:697682206292:layer:sagemaker-layer:2"]
   parameters_custom_policy_map = {
     region                = data.aws_region.current.name
     account_id            = data.aws_caller_identity.current.account_id
-    ssm_parameter_prefix  = "/${var.project}/"
+    ssm_parameter_prefix  = "${var.project}"
   }
   environment_variables = {
     MODEL_DEPLOYMENT_DICT = "/${var.project}/model-deployment-dict"

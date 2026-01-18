@@ -32,8 +32,11 @@ ENDPOINT = get_ssm_json(model_deployment_dict).get('model_endpoint')
 def lambda_handler(event, context):
     log.info(f"Decoding the image data.....")
     # Decode the image data
-    image = base64.b64decode(event["sourceImage"]["image_data"])
-
+    source_image = event.get("sourceImage")
+    key = source_image.get("s3_key")
+    bucket = source_image.get("s3_bucket")
+    image = base64.b64decode(source_image["image_data"])
+    log.info(f"Executing prediction against endpoint: {ENDPOINT}")
     # Instantiate a Predictor
     predictor = sagemaker.predictor.Predictor(endpoint_name=ENDPOINT)
 
@@ -45,9 +48,14 @@ def lambda_handler(event, context):
     inferences = predictor.predict(image)
     
     # We return the data back to the Step Function    
-    event["inferences"] = inferences.decode('utf-8')
-    log.info(f"The inferences in base64 format: {event["inferences"]}")
+    inferences_decode = inferences.decode('utf-8')
+    log.info(f"The inferences in base64 format: {inferences_decode}")
     return {
         'statusCode': 200,
-        'body': json.dumps(event)
+        'body': {
+            "image_data": source_image["image_data"],
+            "s3_bucket": bucket,
+            "s3_key": key,
+            "inferences": inferences_decode
+        }
     }
