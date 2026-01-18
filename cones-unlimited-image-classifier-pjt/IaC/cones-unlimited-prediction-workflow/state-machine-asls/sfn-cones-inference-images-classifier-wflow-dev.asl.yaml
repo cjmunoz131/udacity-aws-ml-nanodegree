@@ -1,0 +1,68 @@
+Comment: A description of my state machine
+StartAt: Manifest Builder
+States:
+  Manifest Builder:
+    Type: Pass
+    Next: data-images-generator
+    Parameters:
+      executionId.$: $.executionId
+      workflowVersion: 1.0.0
+      sourceImage:
+        s3_bucket.$: $.sourceImage.bucket
+        s3_key.$: $.sourceImage.key
+        image_data: ""
+        inferences: []
+  data-images-generator:
+    Type: Task
+    Resource: arn:aws:states:::lambda:invoke
+    Parameters:
+      Payload.$: $
+      FunctionName: ${data_images_generator_lambda_arn}
+    Retry:
+      - ErrorEquals:
+          - Lambda.ServiceException
+          - Lambda.AWSLambdaException
+          - Lambda.SdkClientException
+          - Lambda.TooManyRequestsException
+        IntervalSeconds: 1
+        MaxAttempts: 3
+        BackoffRate: 2
+        JitterStrategy: FULL
+    Next: data-images-classifier
+    ResultPath: $.sourceImage
+    ResultSelector:
+      s3_bucket.$: $.body.s3_bucket
+      s3_key.$: $.body.s3_key
+      image_data.$: $.body.image_data
+      inferences.$: $.body.inferences
+  data-images-classifier:
+    Type: Task
+    Resource: arn:aws:states:::lambda:invoke
+    Parameters:
+      Payload.$: $
+      FunctionName: ${data_images_classifier_lambda_arn}
+    Retry:
+      - ErrorEquals:
+          - Lambda.ServiceException
+          - Lambda.AWSLambdaException
+          - Lambda.SdkClientException
+          - Lambda.TooManyRequestsException
+        IntervalSeconds: 1
+        MaxAttempts: 3
+        BackoffRate: 2
+        JitterStrategy: FULL
+    Next: images-lowinference-filter
+    ResultPath: $.sourceImage
+    ResultSelector:
+      s3_bucket.$: $.body.s3_bucket
+      s3_key.$: $.body.s3_key
+      image_data.$: $.body.image_data
+      inferences.$: $.body.inferences
+  images-lowinference-filter:
+    Type: Task
+    Resource: arn:aws:states:::lambda:invoke
+    Parameters:
+      Payload.$: $
+      FunctionName: ${images_lowinference_filter_lambda_arn}
+    End: true
+    ResultPath: $.result

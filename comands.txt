@@ -1,0 +1,7 @@
+mkdir -p sagemaker/python/lib/python3.11/site-packages/
+cd sagemaker
+
+pip3 install --platform manylinux2014_x86_64 --implementation cp --python-version 3.11 --only-binary=:all: --upgrade --target python/lib/python3.11/site-packages/  sagemaker
+
+
+zip -r sagemaker.zip python/

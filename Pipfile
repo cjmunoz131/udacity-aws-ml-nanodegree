@@ -13,6 +13,7 @@ mxnet = "<2.0.0"
 bokeh = "*"
 autogluon = "*"
 kaggle = "*"
+requests = "*"
 
 [dev-packages]
 

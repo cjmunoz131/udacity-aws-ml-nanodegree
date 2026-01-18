@@ -79,9 +79,59 @@ __pycache__/
 *$py.class
 .env
 .python-version
-
+*.zip
+*/dev/layers/sagemaker/python/*
 ### =========================================
 ### AUTGLUON
 */AutogluonModels/*
 */*.zip
 Pipfile.lock
+
+*/test_images
+*/train_images
+*cifar.tar.gz
+*cifar-100-python
+
+# --- Archivos de Estado de Terraform ---
+# Estos archivos contienen la arquitectura real y pueden tener secretos en texto plano.
+# NUNCA deben subirse al control de versiones.
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*
+
+# --- Directorios de Trabajo ---
+# .terraform contiene los binarios de los providers y módulos descargados. 
+# Se regenera al ejecutar 'terraform init'.
+.terraform/
+
+*.terraform.lock.hcl
+
+# --- Archivos de Variables ---
+# Estos archivos suelen contener credenciales o valores específicos de entorno.
+*.tfvars
+*.tfvars.json
+
+# --- Archivos de Override ---
+# Archivos usados para modificar la configuración localmente sin afectar al equipo.
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# --- Archivos de Bloqueo de Provider ---
+# El archivo .terraform.lock.hcl SÍ suele incluirse en el git para asegurar 
+# que todo el equipo use las mismas versiones de providers. 
+# Solo descomenta la siguiente línea si quieres ignorarlo (no recomendado).
+# .terraform.lock.hcl
+
+# --- CLI Config y Logs ---
+.terraformrc
+terraform.rc
+
+# --- Archivos temporales de sistemas operativos / editores ---
+.DS_Store
+.idea/
+.vscode/
+.env
+*result.out
