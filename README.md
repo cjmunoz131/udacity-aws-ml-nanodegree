@@ -13,7 +13,7 @@ This repository contains solutions to projects submitted in fulfillment of the r
 
 Projects:
 1. **Predict-bike-sharing-pjt**
-2. **cones-unlimited-image-classifier-pjt:**
+2. **Cones-unlimited-image-classifier-pjt:**
     1. The subfolder dev contains lambdas codes and step functions ASL template definition.
     2. The subfolder IaC contains terraform code to deploy the sagemaker environment and the prediction workflow (Step functions and lambda functions).
     3. The subfolder screenshots contains the graph of the step function and the screenshots of step function executions.
