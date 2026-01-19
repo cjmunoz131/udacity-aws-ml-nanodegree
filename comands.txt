@@ -8,3 +8,17 @@ zip -r sagemaker.zip python/
 
 
 pip3 install --platform manylinux2014_aarch64 --implementation cp --python-version 3.11 --only-binary=:all: --upgrade --target python/lib/python3.11/site-packages/  sagemaker
+
+To deploy IaC projects
+1. Add s3Full access and stepfunction start executions permissions.
+
+Step function payload for cones-unlimited-prediction-workflow:
+
+{
+  "executionId": "5343242342312312323",
+  "sourceImage": {
+    "image_data": "",
+    "bucket": "sagemaker-us-east-1-<account-id>",
+    "key": "cones-unlimited-classification/test/bicycle_s_000031.png"
+  }
+}
