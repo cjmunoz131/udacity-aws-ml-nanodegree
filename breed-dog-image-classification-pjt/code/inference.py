@@ -1,4 +1,6 @@
 import os
+import sys
+import logging
 import torch
 import torch.nn as nn
 import torchvision.models as models
@@ -31,7 +33,7 @@ def model_fn(model_dir):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = net().to(device)
     
-    with open(os.path.join(model_dir, "model.pth"), "rb") as f:
+    with open(os.path.join(model_dir, "model_test.pth"), "rb") as f:
         logger.info("Loading the dog-breed-classifier trained model")
         model.load_state_dict(torch.load(f, map_location=device))
         logger.info('model loaded!!!')
