@@ -112,7 +112,7 @@ def train(model, train_loader, val_loader, criterion, optimizer, epochs, model_d
                 else:
                     loss_counter += 1
             logger.info(f"Epoch {epoch} - Phase {phase} - Loss: {epoch_loss:.4f} Acc: {epoch_acc:.4f} Best Loss: {best_loss:.4f}")
-        if loss_counter >= 1:
+        if loss_counter >= 3:
             logger.info("No improvement in validation loss. Stopping training.")
             break
     return model
