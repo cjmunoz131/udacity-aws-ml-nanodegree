@@ -16,9 +16,9 @@ def net():
           Initializes your model
           Remember to use a pretrained model
     '''
-    model = models.resnet50(pretrained=False)
+    model = models.resnet50(pretrained=True)
     for param in model.parameters():
-        param.requires_grad = False 
+        param.requires_grad = False
     num_ftrs = model.fc.in_features
     model.fc = nn.Sequential(
                    nn.Linear(num_ftrs, 133))

@@ -135,4 +135,5 @@ terraform.rc
 .idea/
 .vscode/
 .env
-*result.out
+*result.outbreed-dog-image-classification-pjt/dogImages/
+**/dogImages/

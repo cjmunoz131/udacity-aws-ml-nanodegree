@@ -8,7 +8,6 @@ import torchvision
 import torchvision.models as models
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
-from torchvision.models import ResNet50_Weights
 import argparse
 import os
 import logging
@@ -19,6 +18,9 @@ logger.addHandler(logging.StreamHandler(sys.stdout))
 import smdebug.pytorch as smd
 import time
 
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+
 def test(model, test_loader, criterion, device):
     '''
     this function can take a model and a 
@@ -26,11 +28,9 @@ def test(model, test_loader, criterion, device):
           Remember to include any debugging/profiling hooks that you might need
     '''
     model.eval()
-    test_loss = 0
 
-    running_corrects=0
-    running_loss=0
-    
+    running_corrects = 0
+    running_loss = 0
     with torch.no_grad():
         for data, target in test_loader:
             data, target = data.to(device), target.to(device)
@@ -40,12 +40,12 @@ def test(model, test_loader, criterion, device):
             running_loss += loss.item() * data.size(0)
             running_corrects += torch.sum(preds == target.data).item()
 
-    total_loss = test_loss / len(test_loader.dataset)
+    total_loss = running_loss / len(test_loader.dataset)
     total_accuracy = running_corrects / len(test_loader.dataset)
     logger.info(
         "\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n".format(
             total_loss, running_corrects, len(test_loader.dataset), 100.0 * total_accuracy
-        )    
+        )
     )
     return total_loss
 
@@ -58,8 +58,7 @@ def train(model, train_loader, val_loader, criterion, optimizer, epochs, model_d
     best_loss = float('inf')
     image_dataset={'train':train_loader, 'valid':val_loader}
     loss_counter=0
-    if hook:
-        hook.register_loss(criterion)
+    
 
     for epoch in range(1, epochs + 1):
         for phase in ['train', 'valid']:
@@ -86,7 +85,7 @@ def train(model, train_loader, val_loader, criterion, optimizer, epochs, model_d
                 running_loss += loss.item() * data.size(0)
                 running_corrects += torch.sum(preds == target.data).item()
                 running_samples += len(data)
-                if running_samples % 2000  == 0:
+                if running_samples % 200  == 0:
                     accuracy = running_corrects/running_samples
                     logger.info("{} epoch: {}  [{}/{} ({:.0f}%)] Loss: {:.2f} Accuracy: {}/{} ({:.2f}%)".format(
                             phase,
@@ -157,7 +156,6 @@ def create_data_loaders(data_path, batch_size):
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
     
-    
     #se puede especificar dos rutas diferentes para train y test mediante los arguments en este caso solo se especifica la raiz y se asume que dentro de esa raiz hay dos carpetas train y valid con la estructura de ImageFolder
     # 2. Define datasets
     train_set = datasets.ImageFolder(root=os.path.join(data_path, 'train'), transform=train_transform) 
@@ -170,23 +168,20 @@ def create_data_loaders(data_path, batch_size):
 def main(args):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Executing Training script in: {device}")
-    
     train_loader, valid_loader, test_loader = create_data_loaders(args.data, args.batch_size)
 
     '''
     Initialize a model by calling the net function
     '''
     model = net(args.num_classes).to(device)
-    
     hook = smd.Hook.create_from_json_file()
     hook.register_hook(model)
-    
     '''
     loss and optimizer
     '''
     loss_criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.fc.parameters(), lr=args.lr)
-    
+    hook.register_loss(loss_criterion)
     '''
     Call the train function to start training your model
     Remember that you will need to set up a way to get training data from S3
@@ -201,7 +196,6 @@ def main(args):
     start_time = time.time()
     test(model, test_loader, loss_criterion, device)
     logger.info("Testing time: {} seconds.".format(round(time.time() - start_time, 2)))
-    
     '''
     Save the trained model
     '''
@@ -214,7 +208,7 @@ if __name__=='__main__':
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--lr", type=float, default=0.001)
     parser.add_argument("--epochs", type=int, default=2)
-    
+    parser.add_argument("--num_classes", type=str, default=133)
     # Sagemaker specific arguments. Defaults are set in the environment variables.
     parser.add_argument("--model-dir", type=str, default=os.environ["SM_MODEL_DIR"])
     parser.add_argument("--data", type=str, default=os.environ["SM_CHANNEL_DATA"])

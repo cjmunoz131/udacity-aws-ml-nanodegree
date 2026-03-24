@@ -6,7 +6,6 @@ import torchvision
 import torchvision.models as models
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
-from torchvision.models import ResNet50_Weights
 import argparse
 import os
 import logging
@@ -25,11 +24,9 @@ def test(model, test_loader, criterion, device):
           Remember to include any debugging/profiling hooks that you might need
     '''
     model.eval()
-    test_loss = 0
 
-    running_corrects=0
-    running_loss=0
-    
+    running_corrects = 0
+    running_loss = 0
     with torch.no_grad():
         for data, target in test_loader:
             data, target = data.to(device), target.to(device)
@@ -39,12 +36,12 @@ def test(model, test_loader, criterion, device):
             running_loss += loss.item() * data.size(0)
             running_corrects += torch.sum(preds == target.data).item()
 
-    total_loss = test_loss / len(test_loader.dataset)
+    total_loss = running_loss / len(test_loader.dataset)
     total_accuracy = running_corrects / len(test_loader.dataset)
     logger.info(
         "\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n".format(
             total_loss, running_corrects, len(test_loader.dataset), 100.0 * total_accuracy
-        )    
+        )
     )
     return total_loss
 
@@ -80,7 +77,7 @@ def train(model, train_loader, val_loader, criterion, optimizer, epochs, model_d
                 running_loss += loss.item() * data.size(0)
                 running_corrects += torch.sum(preds == target.data).item()
                 running_samples += len(data)
-                if running_samples % 2000  == 0:
+                if running_samples % 200  == 0:
                     accuracy = running_corrects/running_samples
                     logger.info("{} epoch: {}  [{}/{} ({:.0f}%)] Loss: {:.2f} Accuracy: {}/{} ({:.2f}%)".format(
                             phase,
@@ -116,8 +113,7 @@ def net(num_classes = 133):
     """
     configure Transfer Learning in ResNet50.
     """
-    weights = ResNet50_Weights.DEFAULT
-    model = models.resnet50(weights=weights)
+    model = models.resnet50(pretrained=True)
     # Congelamos las capas base para entrenar solo la "cabeza" inicialmente
     for param in model.parameters():
         param.requires_grad = False
@@ -205,7 +201,7 @@ if __name__=='__main__':
     parser.add_argument("--batch_size", type=int, default=32)
     parser.add_argument("--lr", type=float, default=0.001)
     parser.add_argument("--epochs", type=int, default=2)
-    
+    parser.add_argument("--num_classes", type=str, default=133)
     # Sagemaker specific arguments. Defaults are set in the environment variables.
     parser.add_argument("--model-dir", type=str, default=os.environ["SM_MODEL_DIR"])
     parser.add_argument("--data", type=str, default=os.environ["SM_CHANNEL_DATA"])
