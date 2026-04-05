@@ -69,12 +69,12 @@ The best trainig hyperparameters are those that minize the `Test Loss` metric
 
 | TrainingJobName                               | batch_size   |   learning_rate |   Test Loss |   TrainingTime |
 |:----------------------------------------------|:-------------|----------------:|------------:|---------------:|
-| pytorch-dog-hpo-tuni-220117-0020-004-30d11567 | "256"        |      0.0141198  |     2.33193 |           1365 |
-| pytorch-dog-hpo-tuni-220117-0020-003-8cc229d5 | "32"         |      0.00288517 |     1.17126 |           1222 |
-| pytorch-dog-hpo-tuni-220117-0020-002-79a70b44 | "512"        |      0.00126656 |     2.49791 |           1381 |
-| pytorch-dog-hpo-tuni-220117-0020-001-ceff5c55 | "128"        |      0.0425335  |     4.85937 |           1370 |
+| pytorch-dog-breed-hp-260404-2324-004-77f9654d | "256"        |      0.021611   |     2.6197  |           1365 |
+| pytorch-dog-breed-hp-260404-2324-003-7c43aba1 | "64"         |      0.091363   |     18.9740  |           1222 |
+| pytorch-dog-breed-hp-260404-2324-002-3ec2c4c9 | "128"        |      0.002274   |     .7775  |           1381 |
+| pytorch-dog-breed-hp-260404-2324-001-e098a150 | "128"        |      0.017384   |     1.9084  |           1370 |
 
-- Best hyperparameters: `batch_size` = 32 and `learning_rate` = 0.00288517
+- Best hyperparameters: `batch_size` = 128 and `learning_rate` = 0.002274
 
 
 ## Debugging and Profiling
