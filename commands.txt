@@ -22,3 +22,8 @@ Step function payload for cones-unlimited-prediction-workflow:
     "key": "cones-unlimited-classification/test/bicycle_s_000031.png"
   }
 }
+
+
+eval "$(ssh-agent -s)"
+sudo ssh-add ~/.ssh/cjmunoz131/terraform-modules
+sudo chmod 0400 ~/.ssh/cjmunoz131/terraform-modules
