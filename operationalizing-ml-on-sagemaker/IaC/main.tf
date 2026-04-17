@@ -66,7 +66,7 @@ module "sagemaker-notebook-instance" {
   private_subnet_id = module.aws_networking_base_vpc_layer_module.private_subnet_id_list[0]
   sagemaker_instance_name = "udacity-ml"
   sagemaker_instance_type = "ml.t3.medium"
-  platform_identifier = "notebook-al2-v2"
+  platform_identifier = "notebook-al2-v3"
   direct_internet_access = "Disabled"
   volume_size = 50
   target_buckets = [module.aws_storage_landing_objects_s3_bucket_layer_module.bucket_id]
