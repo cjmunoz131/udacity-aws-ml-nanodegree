@@ -1,7 +1,7 @@
 variable "project" {
   type        = string
   description = "Deployment project"
-  default     = "mutual"
+  default     = "udacity-cjmm"
 }
 
 variable "provisioner" {
