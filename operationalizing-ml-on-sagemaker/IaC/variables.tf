@@ -70,3 +70,20 @@ variable "subnet_database_cidr_blocks" {
   description = "cidr block for vpc"
   default     = ["10.0.5.0/24", "10.0.6.0/24"]
 }
+
+variable "execute_inference_breed_dog_classification" {
+  type        = string
+  description = "Lambda runtime"
+  default     = "exec-inf-breeddog-cls"
+}
+
+variable "lambda_runtime" {
+  type = string
+  default = "python3.11"
+}
+
+variable "integration_kms_key_name" {
+  description = "value"
+  type        = string
+  default     = "integration-udacity"
+}
