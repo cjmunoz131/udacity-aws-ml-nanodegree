@@ -1,0 +1,21 @@
+[
+    {
+        "Action" : [
+            "sagemaker:InvokeEndpoint"
+        ],
+        "Effect" : "Allow",
+        "Resource" : [
+            "arn:aws:sagemaker:${region}:${account_id}:endpoint/${endpoint_name}"
+        ]
+    },
+    {
+        "Effect": "Allow",
+        "Action": [
+            "kms:Decrypt",
+            "kms:Encrypt",
+            "kms:GenerateDataKey",
+            "kms:DescribeKey"
+        ],
+        "Resource": ["${kms_key_arn}"]
+    }
+]

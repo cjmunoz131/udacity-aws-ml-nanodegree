@@ -1,0 +1,19 @@
+[
+    {
+        "Effect": "Allow",
+        "Action": [
+            "ssm:GetParameter",
+            "ssm:GetParameters"
+        ],
+        "Resource": "arn:aws:ssm:${region}:${account_id}:parameter/${ssm_parameter_prefix}/*"
+    },
+    {
+        "Action" : [
+            "sagemaker:InvokeEndpoint"
+        ],
+        "Effect" : "Allow",
+        "Resource" : [
+            "arn:aws:sagemaker:${region}:${account_id}:endpoint/*"
+        ]
+    }
+]

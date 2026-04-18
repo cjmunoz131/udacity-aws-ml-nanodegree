@@ -1,0 +1,21 @@
+[
+    {
+      "Effect": "Allow",
+      "Action": "lambda:InvokeFunction",
+      "Resource": [
+        "${data_images_generator_lambda_arn}",
+        "${data_images_classifier_lambda_arn}",
+        "${images_lowinference_filter_lambda_arn}"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "xray:PutTraceSegments",
+        "xray:PutTelemetryRecords",
+        "xray:GetSamplingRules",
+        "xray:GetSamplingTargets"
+      ],
+      "Resource": "*"
+    }
+]

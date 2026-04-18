@@ -38,7 +38,7 @@ ipython_config.py
 # Ignorar datasets (mejor descargarlos o usar DVC)
 data/raw/
 data/processed/
-*.json
+
 *.h5
 *.parquet
 *.pickle
