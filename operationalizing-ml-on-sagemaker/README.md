@@ -8,7 +8,7 @@ operationalizing-ml-on-sagemaker/
 │   ├── dev/
 │   │   ├── artefacts/
 │   │   │   └── lambdas/
-│   │   │       └── udacity-cjmm-exec-inf-breeddog-cls.zip   # Packaged Lambda deployment artifact
+│   │   │       └── udacity-cjmm-exec-inf-breeddog-cls.zip
 │   │   └── lambdas/
 │   │       └── udacity-cjmm-exec-inf-breeddog-cls/
 │   │           └── index.py                      # Lambda function source code
@@ -37,7 +37,7 @@ operationalizing-ml-on-sagemaker/
 ├── infernce2.py                                  # Inference script for endpoint deployment
 ├── lab.jpg                                       # Sample test image
 ├── lamdafunction.py                              # Lambda function for invoking the endpoint
-├── train_and_deploy-solution.ipynb               # Main Jupyter notebook (training & deployment)
+├── train_and_deploy-solution.ipynb               # Main Jupyter notebook
 ├── train_and_deploy-solution.html                # HTML export of the notebook
 └── README.md                                     # Project documentation (this file)
 ```
@@ -50,7 +50,7 @@ First, the project template [`starter.zip`](https://video.udacity-data.com/tophe
 
 A screenshot of the notebook instance:  
 
-![Notebook Instance](screenshots/01-a_sagemaker-notebook-instance.png?raw=true "Notebook Instance")
+![Notebook Instance](screenshots/01-a_sagemaker-notebook-instance.png "Notebook Instance")
 
 
 
@@ -76,7 +76,7 @@ To download the data to S3, an S3 bucket was first created as a Terraform resour
 
 A screenshot of the created bucket:  
 
-![S3 bucket](screenshots/01-b_s3-bucket.png?raw=true "S3 bucket")
+![S3 bucket](screenshots/01-b_s3-bucket.png "S3 bucket")
 
 ### Training and Deployment (Single Instance Training)
 For single-instance training and deployment, cells 14 through 16 of the [`train_and_deploy-solution.ipynb`](train_and_deploy-solution.ipynb) notebook were executed. I created a tuning job with an `ml.m5.xlarge` instance type, `max_jobs=2` and `max_parallel_jobs=1`, where each job took approximately 20 minutes for a total of 40 minutes. The best hyperparameters found were: `{'batch_size': 128, 'learning_rate': '0.006065489818368382'}`
@@ -225,7 +225,7 @@ To verify that the deployment was working correctly, I executed a request with t
 
 The endpint name is `'ytorch-inference-2026-04-17-21-54-53-925'` and is shown in the following screenshot:
 
-![Endpoint - Single Instance](screenshots/01-c_endpoint-1_single-instance-training.png?raw=true "Endpoint - single instance")
+![Endpoint - Single Instance](screenshots/01-c_endpoint-1_single-instance-training.png "Endpoint - single instance")
 
 ## Training and Deployment (Multi-instance training)
 I created a multi-instance training job with `instance_count=4` to run 4 instances simultaneously.
@@ -239,7 +239,7 @@ estimator_multi_instance = PyTorch(
 ```
 Then, the remaining notebook cells were executed to deploy a new endpoint `'pytorch-inference-2026-04-17-23-33-53-853'`, which is shown in the following screenshot:  
 
-![Endpoint - Multi-instance](screenshots/01-c_endpoint-1_detail-multi-instance-training.png?raw=true "Endpoint - multi-instance")
+![Endpoint - Multi-instance](screenshots/01-c_endpoint-1_detail-multi-instance-training.png "Endpoint - multi-instance")
 
 Finally, I re-ran the inference test cells in the notebook and obtained the following resulting vector:
 ```json
@@ -302,7 +302,7 @@ module "machine-learning-training-instance-ec2-module" {
   providers = {
     aws.main = aws.account1
   }
-  source = "git@github.com:cjmunoz131/terraform_modules//modules/aws/aws-app-compute-virtual-machine-ec2"
+  source = "git@github.com:cjmunoz131/.../aws-app-compute-virtual-machine-ec2"
   
   project     = var.project
   environment = terraform.workspace
@@ -342,7 +342,7 @@ module "machine-learning-training-instance-ec2-module" {
 
 Screenshot of the created instance:  
 
-![EC2 Instance](screenshots/02-a_ec2-instance.png?raw=true "EC2 Instance")
+![EC2 Instance](screenshots/02-a_ec2-instance.png "EC2 Instance")
 
 
 Then I used ssh to connect to the instance:
@@ -377,7 +377,7 @@ python3 solution.py
 ```
 Screenshot of final model training step in terminal:  
 
-![EC2 Terminal](screenshots/02-b_ec2-terminal-ssh.png?raw=true "EC2 Terminal")
+![EC2 Terminal](screenshots/02-b_ec2-terminal-ssh.png "EC2 Terminal")
 
 
 ### Difference Between EC2 Training Code and the Code used in Sagemaker
@@ -436,17 +436,17 @@ In this step, the AmazonSageMakerFullAccess policy was attached so the Lambda fu
 
 Screenshot of the IAM role used to execute the lambda function:  
 
-![IAM role](screenshots/04-b_IAM-role.png?raw=true "IAM role")
+![IAM role](screenshots/04-b_IAM-role.png "IAM role")
 
 ### Lambda function testing
 
 The inference Lambda function was tested using the following dog breed image:
 
-![Carolina Dog Standing Outdoors](https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/20113314/Carolina-Dog-standing-outdoors.jpg?raw=true "Carolina Dog Standing Outdoors")
+![Carolina Dog Standing Outdoors](https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/20113314/Carolina-Dog-standing-outdoors.jpg "Carolina Dog Standing Outdoors")
 
 The following JSON request dictionary was constructed: `{ "url": "https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/20113314/Carolina-Dog-standing-outdoors.jpg" }` and the result is shown in the following screenshot:
 
-![Lambda function successful test](screenshots/04-a_lambda-function-testing.png?raw=true "Lambda function successful test")
+![Lambda function successful test](screenshots/04-a_lambda-function-testing.png "Lambda function successful test")
 
 
 ### Security Considerations
@@ -484,7 +484,7 @@ Since high transaction volumes are not expected for these functions, it is not n
 
 Screenshot of lambda concurrency settings:  
 
-![Lambda function concurrency settings](screenshots/05_lambda-concurrency.png?raw=true "Lambda Concurrency")
+![Lambda function concurrency settings](screenshots/05_lambda-concurrency.png "Lambda Concurrency")
 
 ### Auto-scaling
 To support a higher volume of requests from multiple Lambda function invocations to the SageMaker endpoint, auto-scaling was configured for the endpoint to scale up to a maximum of 3 instances, with a scale_in_cooldown of 300 seconds and a scale_out_cooldown of 60 seconds. These settings were sufficient for the project needs and workload.
