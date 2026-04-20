@@ -165,46 +165,46 @@ resource "aws_key_pair" "ec2_key_pair" {
   }
 }
 
-# module "machine-learning-training-instance-ec2-module" {
-#   providers = {
-#     aws.main = aws.account1
-#   }
-#   source = "git@github.com:cjmunoz131/terraform_modules//modules/aws/aws-app-compute-virtual-machine-ec2"
+module "machine-learning-training-instance-ec2-module" {
+  providers = {
+    aws.main = aws.account1
+  }
+  source = "git@github.com:cjmunoz131/terraform_modules//modules/aws/aws-app-compute-virtual-machine-ec2"
   
-#   project     = var.project
-#   environment = terraform.workspace
+  project     = var.project
+  environment = terraform.workspace
   
-#   instances_config = {
-#     # Servidor de aplicación
-#     app_server = {
-#       iam_instance_profile  = aws_iam_instance_profile.this.name
-#       associate_public_ip_address = true
-#       ami           = "ami-09570605cb6ed4f72"
-#       instance_type = "m5.2xlarge"
-#       subnet_id     = module.aws_networking_base_vpc_layer_module.public_subnet_id_list[0]
+  instances_config = {
+    # Servidor de aplicación
+    app_server = {
+      iam_instance_profile  = aws_iam_instance_profile.this.name
+      associate_public_ip_address = true
+      ami           = "ami-09570605cb6ed4f72"
+      instance_type = "m5.2xlarge"
+      subnet_id     = module.aws_networking_base_vpc_layer_module.public_subnet_id_list[0]
       
-#       security = {
-#         security_group_ids = [aws_security_group.client.id]
-#         key_name           = aws_key_pair.ec2_key_pair.key_name
-#       }
+      security = {
+        security_group_ids = [aws_security_group.client.id]
+        key_name           = aws_key_pair.ec2_key_pair.key_name
+      }
       
-#       root_block_device = {
-#         volume_size = 100
-#         volume_type = "gp3"
-#         encrypted   = true
-#       }
+      root_block_device = {
+        volume_size = 100
+        volume_type = "gp3"
+        encrypted   = true
+      }
       
-#       additional_volumes = {
-#         data = {
-#           device_name = "/dev/sdf"
-#           size        = 20
-#           type        = "gp3"
-#           encrypted   = true
-#         }
-#       }
-#     }
-#   }
-# }
+      additional_volumes = {
+        data = {
+          device_name = "/dev/sdf"
+          size        = 20
+          type        = "gp3"
+          encrypted   = true
+        }
+      }
+    }
+  }
+}
 
 resource "aws_security_group" "sg_lambda" {
   provider               = aws.account1
